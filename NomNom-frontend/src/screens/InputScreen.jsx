@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { NavLink } from "react-router-dom";
 
 function InputScreen() {
   const [selectedUser, setSelectedUser] = useState("");
@@ -37,14 +38,12 @@ function InputScreen() {
     <div className="container">
       <header className="statHeader">
         <h1 className="headerSlot">NomNom</h1>
-        <div
+        <NavLink
           className="stats"
-          onClick={() => {
-            window.location.href = "/stats";
-          }}
+          to="/stats"
         >
           📊
-        </div>
+        </NavLink>
       </header>
       <form>
         <div className="section">
