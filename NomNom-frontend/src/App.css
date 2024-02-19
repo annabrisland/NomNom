@@ -1,42 +1,96 @@
-#root {
-  /* max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center; */
-}
-
 /* InputScreen Styles */
 header {
   display: flex;
   align-items: center;
 }
 
-label {
-  display: block;
+.input-wrapper input, .input-wrapper label {
+  font-size: 16px;
+  font-weight: 400;
+  border: 0 solid;
 }
 
 input {
-  background-color: #EFEFEF;
+  position: relative;
+  padding: 18px 10px;
+  border-color: #d5dbdb;
+  background-color: transparent;
+  z-index: 1;
+  outline: none;
+  padding-top: 20px;
+}
+
+input:focus + label {
+  transform: scale(0.5);
+  top: 6px;
+}
+
+input:not(:placeholder-shown) + label {
+  transform: scale(0.5);
+  top: 6px;
+}
+
+label {
+  border-color: transparent;
+  color: #8E8E8E;
+}
+
+.input label {
+  position: absolute;
+  top: 18px;
+  left: 10px;
+  z-index: 0;
+  transition: all 300ms ease-out;
+  width: 100%;
+  transform-origin: top left;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+  transition: margin 300ms ease-in-out;
+}
+
+.input-wrapper .input {
+  background-color: #efefef;
   border: none;
   border-radius: 5px;
-  padding: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .container {
   margin: 0px 10px;
 }
 
+.section {
+  margin-top: 30px;
+}
+
+.user-container {
+  display: flex;
+  width: 100%;
+}
+
+.user {
+  background-color: #efefef;
+  padding: 20px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
 .protein-list {
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
+  max-width: 500px;
   padding: 0;
   gap: 8px;
 }
 
 .protein-list-item {
   background-color: white;
-  border: solid 1.5px #EFEFEF;
+  border: solid 1.5px #efefef;
   padding: 8px 12px;
   border-radius: 30px;
   text-align: center;
@@ -48,8 +102,9 @@ input {
   font-size: 0.9rem;
   font-weight: 700;
   margin-top: 20px;
-  padding: 12px;
+  padding: 18px;
   width: 100%;
+  max-width: 500px;
   border: none;
   border-radius: 5px;
 }
