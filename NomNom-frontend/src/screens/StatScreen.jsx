@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import ReactApexChart from "react-apexcharts";
+import ProteinMap from "../utils/ProteinMap.js";
+import back from "../assets/backArrow.png"
 
 function StatScreen() {
   const [selectedUser, setSelectedUser] = useState("harin");
@@ -11,26 +13,12 @@ function StatScreen() {
   const [last3Eaten, setLast3Eaten] = useState([]);
   const [mostConsumedProtein, setMostConsumedProtein] = useState("");
   const [leastConsumedProtein, setLeastConsumedProtein] = useState("");
-
-  const cuisineChartOptions = {
-    chart: {
-      width: 380,
-      type: "pie",
-    },
+  const cuisineChartOptions = { 
     labels: cuisineList,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: "bottom",
-          },
-        },
-      },
-    ],
+    legend: {
+      show: true,
+      position: "bottom",
+    },
   };
 
   async function getStats(user_id) {
@@ -53,7 +41,6 @@ function StatScreen() {
     };
     const command = new QueryCommand(input);
     const data = await docClient.send(command);
-    console.log(data.Items);
 
     const cuisineList = data.Items.map((item) => item.cuisine);
     const uniqueCuisines = [...new Set(cuisineList)];
@@ -102,59 +89,53 @@ function StatScreen() {
   }, [selectedUser]);
 
   return (
-    <div>
+    <div className="container">
       {/* Header */}
       <div className="statHeader">
-        <div>Back</div>
-        <div>BiteSnap</div>
-        <div>Placeholder</div>
+        <img className="arrow" src={back} onClick={() => {
+          window.location.href = "/";
+        }}></img>
+        <h1  className="headerSlot">NomNom</h1>
       </div>
       {/* Who Dropdown */}
-      <div className="whoDropdown">
-        <div
-          onClick={() => {
-            setSelectedUser("harin");
-          }}
-        >
-          Harin
-        </div>
-        <div
-          onClick={() => {
-            setSelectedUser("anna");
-          }}
-        >
-          Anna
-        </div>
+      <div className="user-container">
+          <div className={`user ${selectedUser == "harin" ? "selected-user" : ""}`} onClick={() => setSelectedUser("harin")}>👦🏻 &nbsp;Harin</div>
+          <div className={`user ${selectedUser == "anna" ? "selected-user" : ""}`} onClick={() => setSelectedUser("anna")}>👧🏻 &nbsp;Anna</div>
       </div>
       {/* Cuisine Pie Chart */}
+      <p className="section-label">Your Cuisine Breakdown</p>
       <div className="pieChartArea">
-        {console.log(cuisineChartOptions)}
         <ReactApexChart
           options={cuisineChartOptions}
           series={cuisineSeries}
           type="pie"
-          width={380}
+          width={400}
         />
       </div>
       {/* LRU Cuisine */}
-      <div className="whoDropdown">
-        <div>You have not had these in a while!</div>
+      <div className="cuisineArea">
+        <label className="section-label">Your Forgotten Cuisines</label>
         <div>
           {last3Eaten.map((item) => {
             return (
               <div key={item[1].date}>
-                {item[1].cuisine} - {item[1].restaurant_name}
+                <div className="forgotten-item">
+                <div className="cuisine-item">{item[1].cuisine}</div>
+                from 
+                <div className="restaurant-item">{item[1].restaurant_name}</div>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
       {/* Protein */}
-      <div className="whoDropdown">
-        <div>Most Consumed Protein vs Least Consumed Protein</div>
-        <div>
-          <div>{mostConsumedProtein}</div>
-          <div>{leastConsumedProtein}</div>
+      <div className="proteinArea">
+        <label className="section-label">Your Favourite Protein</label>
+        <div className="proteinCompare">
+          <div className="bigProtein">{ProteinMap[mostConsumedProtein]}</div>
+          <div className="compareSign">{">"}</div>
+          <div className="smallProtein">{ProteinMap[leastConsumedProtein]}</div>
         </div>
       </div>
     </div>
