@@ -147,6 +147,7 @@ label {
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  position: relative;
 }
 
 .headerSlot {
@@ -237,4 +238,5 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
